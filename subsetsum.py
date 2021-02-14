@@ -23,9 +23,24 @@ def ssum_dyn(x, i, t):
         return ssum_dyn(x, i+1, t)
     return ssum_dyn(x, i+1, t) or ssum_dyn(x, i+1, t-x[i])
 
+def ssum_dyn1(x, t):
+    S = [[False for i in range(0, len(x) + 1)] for j in range(0, t+1)]
 
+    for i in range(0, len(x)+1):
+        S[0][i] = True
+    for i in range(len(x)-1, -1, -1):
+        for v in range(0, t):
+            if v < x[i]:
+                S[v][i] = S[v][i+1]
+            else:
+                S[v][i] = S[v][i+1] or S[v-x[i]][i+1]
+
+    return S[v][0]
+ 
+print(ssum_dyn1([1, 8, 3], 4)) # True
 x = [3, 34, 4, 12, 5, 2]
-print(ssum_dyn(x, 0, 12))
-print(ssum_dyn(x, 0, 30))
-print(ssum_dyn(x, 0, 5))
+print(ssum_dyn1(x, 3)) # True
+print(ssum_dyn1(x, 12)) # True
+print(ssum_dyn1(x, 30)) # False
+print(ssum_dyn1(x, 5))  # True
     
